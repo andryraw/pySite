@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block content %}
+   <h1>Edit your account</h1>
+    <form action="" method="POST">
+        {{ form.hidden_tag() }}
+        <p>
+            {{  form.first_name.label }}<br>
+            {{  form.first_name(size=32) }}<br>
+            {% for error in form.first_name.errors %}
+                [{{ error }}]
+            {% endfor %}
+        </p>
+        <p>
+            {{  form.last_name.label }}<br>
+            {{  form.last_name(size=32) }}<br>
+            {% for error in form.last_name.errors %}
+                [{{ error }}]
+            {% endfor %}
+        </p>
+        <p>
+            {{  form.username.label }}<br>
+            {{  form.username(size=32) }}<br>
+            {% for error in form.username.errors %}
+                [{{ error }}]
+            {% endfor %}
+        </p>
+        <p>
+            {{  form.email.label }}<br>
+            {{  form.email(size=32) }}<br>
+            {% for error in form.email.errors %}
+                [{{ error }}]
+            {% endfor %}
+        </p>
+        <p>
+            {{  form.about_me.label }}<br>
+            {{  form.about_me() }}<br>
+        </p>
+        <p>
+            {{  form.password_1.label }}<br>
+            {{  form.password_1(size=32) }}<br>
+            {% for error in form.password_1.errors %}
+                [{{ error }}]
+            {% endfor %}
+        </p>
+        <p>
+            {{  form.password_2.label }}<br>
+            {{  form.password_2(size=32) }}<br>
+            {% for error in form.password_2.errors %}
+                [{{ error }}]
+            {% endfor %}
+        </p>
+        <p>
+            {{ form.submit() }}
+        </p>
+    </form>
+    <p><a href="{{ url_for('delete') }}">Delete page</a></p>
+{% endblock %}

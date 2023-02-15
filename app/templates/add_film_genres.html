@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block content %}
+   <h1>Add film genre</h1>
+    <form action="" method="POST">
+        {{ form.hidden_tag() }}
+        <p>
+            {{  form.genres.label }}<br>
+            {{  form.genres() }}<br>
+            {% for error in form.genres.errors %}
+                [{{ error }}]
+            {% endfor %}
+        </p>
+        <p>
+            {{ form.submit() }}
+        </p>
+    </form>
+{% endblock %}

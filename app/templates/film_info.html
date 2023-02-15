@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>{{ film.name }}</h1>
+    <p>Type: {{ film.type }}</p>
+    <p>Duration: {{ film.duration }} min</p>
+    <p>Year: {{ film.year }}</p>
+    <p>Country: {{ film.country }}</p>
+    <p>Director: {{ film.director }}
+        {% if current_user.username == 'admin' %}
+            <a href="{{ url_for('film_director', id=film.id) }}">Add director</a>
+        {% endif %}
+    </p>
+    <p>Status: ...</p>
+    <p>Genres: {% for i in film.genres %}
+                    {{ i }}
+                {% endfor %}
+    {% if current_user.username == 'admin' %}
+        <a href="{{ url_for('film_genres', id=film.id) }}">Add genres</a>
+    {% endif %}
+    </p>
+{% endblock %}
