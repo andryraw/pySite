@@ -1,5 +1,5 @@
 from app import app, db
-from app.models import User, Film, Director, Genre
+#from app.models import User, Film, Director, Genre
 
 
 #@app.shell_context_processors

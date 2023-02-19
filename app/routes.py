@@ -1,6 +1,7 @@
-from app import app, db
+from app import app, db, mail
 from flask import render_template, url_for, redirect, flash, request
 from flask_login import current_user, login_user, logout_user, login_required
+from flask_mail import Message
 from app.forms import RegistrationForm, LoginForm, EditForm,\
     AddFilmForm, AddFilmGenre, AddFilmDirector,\
     AddGenre, AddDirector
@@ -14,6 +15,14 @@ def index():
     if current_user.is_anonymous:
         return redirect(url_for('login'))
     return render_template('index.html', title='Home page')
+
+
+@app.route('/send')
+def send_msg():
+    msg = Message('Subject', sender='andryraw2323x2@gmail.com', recipients=['andryraw2323x2@gmail.com'])
+    msg.body = "Test message"
+    mail.send(msg)
+    return "Mail send successfully!"
 
 
 # user page
