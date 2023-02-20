@@ -1,5 +1,6 @@
 from flask import Flask
 from config import Config
+from itsdangerous import URLSafeSerializer
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_login import LoginManager
@@ -13,6 +14,7 @@ db = SQLAlchemy(app)
 migrate = Migrate(app, db, render_as_batch=True)
 login_manager = LoginManager(app)
 mail = Mail(app)
+ts = URLSafeSerializer(Config.SECRET_KEY)
 
 
 from app import routes, models, errors

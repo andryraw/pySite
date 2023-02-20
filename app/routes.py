@@ -1,4 +1,5 @@
-from app import app, db, mail
+from app import app, db, mail, ts
+from itsdangerous import SignatureExpired
 from flask import render_template, url_for, redirect, flash, request
 from flask_login import current_user, login_user, logout_user, login_required
 from flask_mail import Message
@@ -15,15 +16,6 @@ def index():
     if current_user.is_anonymous:
         return redirect(url_for('login'))
     return render_template('index.html', title='Home page')
-
-
-@app.route('/send')
-def send_msg():
-    msg = Message('New message', sender='andryraw2323x2@gmail.com', recipients=['andryraw2323x2@gmail.com'])
-    msg.body = "Hello world!"
-    mail.send(msg)
-    flash('Mail send successfully!')
-    return redirect(url_for('index'))
 
 
 # user page
@@ -47,10 +39,25 @@ def register():
         u.set_password(form.password_1.data)
         db.session.add(u)
         db.session.commit()
-        flash('You are registered!')
-        login_user(u)
+        token = ts.dumps(u.email, salt='email-confirm')
+        link = url_for('confirm_email', token=token, _external=True)
+        msg = Message('Confirm your email', sender='andryraw2323x2@gmail.com', recipients=[u.email])
+        msg.body = f"Please confirm your email \n {link}"
+        mail.send(msg)
+        flash('You are registered! Now confirm your email')
         return redirect(url_for('index'))
     return render_template('register.html', title='Register', form=form)
+
+
+@app.route('/confirm_email/<token>')
+def confirm_email(token):
+    try:
+        email = ts.loads(token, salt='email-confirm', max_age=300)
+    except SignatureExpired:
+        flash('The token is expired!')
+        return redirect(url_for('index'))
+    flash('The token works!')
+    return redirect(url_for('index'))
 
 
 # edit profile
