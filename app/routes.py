@@ -19,10 +19,11 @@ def index():
 
 @app.route('/send')
 def send_msg():
-    msg = Message('Subject', sender='andryraw2323x2@gmail.com', recipients=['andryraw2323x2@gmail.com'])
-    msg.body = "Test message"
+    msg = Message('New message', sender='andryraw2323x2@gmail.com', recipients=['andryraw2323x2@gmail.com'])
+    msg.body = "Hello world!"
     mail.send(msg)
-    return "Mail send successfully!"
+    flash('Mail send successfully!')
+    return redirect(url_for('index'))
 
 
 # user page
