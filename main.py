@@ -1,5 +1,5 @@
 from app import app, db
-#from app.models import User, Film, Director, Genre
+from app.models import User, Film, Director, Genre
 
 
 #@app.shell_context_processors
@@ -8,4 +8,4 @@ from app import app, db
 
 
 if __name__ == '__main__':
-    app.run(debug=False)
+    app.run(debug=True)

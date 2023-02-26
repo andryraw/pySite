@@ -9,7 +9,7 @@ class Config:
     MAIL_SERVER = 'smtp.gmail.com'
     MAIL_PORT = 465
     MAIL_USE_SSL = True
-    MAIL_USERNAME = 'andryraw2323x2@gmail.com'
-    MAIL_DEFAULT_SENDER = 'andryraw2323x2@gmail.com'
-    MAIL_PASSWORD = 'ybyfwltggpaqkcjk'
+    MAIL_USERNAME = os.environ.get('MAIL_USERNAME')
+    MAIL_DEFAULT_SENDER = os.environ.get('MAIL_DEFAULT_SENDER')
+    MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
 

@@ -41,7 +41,7 @@ def register():
         db.session.commit()
         token = ts.dumps(u.email, salt='email-confirm')
         link = url_for('confirm_email', token=token, _external=True)
-        msg = Message('Confirm your email', sender='andryraw2323x2@gmail.com', recipients=[u.email])
+        msg = Message('Confirm your email', recipients=[u.email])
         msg.body = f"Please confirm your email \n {link}"
         mail.send(msg)
         flash('You are registered! Now confirm your email')
@@ -56,6 +56,7 @@ def confirm_email(token):
     except SignatureExpired:
         flash('The token is expired!')
         return redirect(url_for('index'))
+    
     flash('The token works!')
     return redirect(url_for('index'))
 
@@ -95,8 +96,11 @@ def login():
         if l_user is None or not l_user.check_password(form.password.data):
             flash('Invalid username or password!')
             return redirect(url_for('login'))
-        login_user(l_user, remember=form.remember_me.data)
-        return redirect(url_for('index'))
+        if l_user.confirm:
+            login_user(l_user, remember=form.remember_me.data)
+            return redirect(url_for('index'))
+        else:
+            flash("Your account hasn't been verified")
     return render_template('login.html', title='Login', form=form)
 
 

@@ -19,9 +19,10 @@ class User(db.Model, UserMixin):
     about_me = db.Column(db.String(250))
     password_hash = db.Column(db.String(128))
     id_film_watched = db.Column(db.Integer, db.ForeignKey('film.id'))
+    confirm = db.Column(db.Boolean)
 
     def __repr__(self):
-        return f'<User {self.username}>'
+        return f'{self.username}'
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
