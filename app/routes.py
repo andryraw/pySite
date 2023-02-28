@@ -52,12 +52,17 @@ def register():
 @app.route('/confirm_email/<token>')
 def confirm_email(token):
     try:
-        email = ts.loads(token, salt='email-confirm', max_age=300)
+        email = ts.loads(token, salt='email-confirm', max_age=30)
     except SignatureExpired:
         flash('The token is expired!')
         return redirect(url_for('index'))
-    
-    flash('The token works!')
+    confirm_user = User.query.filter_by(email=email).first()
+    if confirm_user.confirm:
+        flash('Your address has already been verified')
+    else:
+        confirm_user.confirm = True
+        db.session.commit()
+        flash('Your email is successfully confirmed!')
     return redirect(url_for('index'))
 
 
