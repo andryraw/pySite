@@ -4,4 +4,5 @@
 {% block content %}
     <h1>{{ user.username }}</h1>
     <h4>{{ user.first_name }} {{ user.last_name }}</h4>
+    <img src="{{ url_for('static', filename='img/default_avatar.png') }}", alt="image", width="100">
 {% endblock %}

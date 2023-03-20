@@ -2,6 +2,13 @@
 
 {% block content %}
     <h1>{{ film.name }}</h1>
+    <p>{{ film.poster }}</p>
+    {% if current_user.username == 'admin' %}
+    <form action="">
+        {{ form.hidden_tag() }}
+        {{ form.poster_loader }}
+    </form>
+    {% endif %}
     <p>Type: {{ film.type }}</p>
     <p>Duration: {{ film.duration }} min</p>
     <p>Year: {{ film.year }}</p>

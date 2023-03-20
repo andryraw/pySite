@@ -5,7 +5,7 @@ from flask_login import current_user, login_user, logout_user, login_required
 from flask_mail import Message
 from app.forms import RegistrationForm, LoginForm, EditForm,\
     AddFilmForm, AddFilmGenre, AddFilmDirector,\
-    AddGenre, AddDirector
+    AddGenre, AddDirector, FilmPosterForm
 from app.models import User, Film, Director, Genre
 
 
@@ -153,8 +153,9 @@ def add_film():
 @app.route('/film/<id>')
 @login_required
 def film_info(id):
+    form = FilmPosterForm()
     film = Film.query.filter_by(id=id).first_or_404()
-    return render_template('film_info.html', title=film, film=film)
+    return render_template('film_info.html', title=film, form=form, film=film)
 
 
 # add genres to film

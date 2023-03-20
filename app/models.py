@@ -42,6 +42,7 @@ class Film(db.Model):
     id_director = db.Column(db.Integer, db.ForeignKey('director.id'))
     film_watched = db.relationship('User', backref='film')
     genres = db.relationship('Genre', secondary=film_genre, backref='films')
+    poster = db.Column(db.String(128), nullable=True, unique=True)
 
     def __repr__(self):
         return f'{self.name}'
@@ -70,3 +71,6 @@ class Director(db.Model):
 @login_manager.user_loader
 def load_user(id):
     return User.query.get(int(id))
+
+
+db.create_all()

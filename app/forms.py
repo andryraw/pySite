@@ -2,9 +2,11 @@ from app import app
 from app.models import User, Genre, Director
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, TextAreaField, BooleanField,\
-    SubmitField, EmailField, SelectField
+    SubmitField, EmailField, SelectField, FileField
 from wtforms.validators import InputRequired, Email, EqualTo, Length, ValidationError
 
+
+# -------------------- user section --------------------
 
 class RegistrationForm(FlaskForm):
     first_name = StringField('First Name', validators=[InputRequired()])
@@ -54,6 +56,8 @@ class LoginForm(FlaskForm):
     submit = SubmitField('Enter')
 
 
+# -------------------- film section --------------------
+
 class AddFilmForm(FlaskForm):
     name = StringField('Name', validators=[InputRequired()])
     type = SelectField('Type', validators=[InputRequired()], choices=['Movie', 'TV series'])
@@ -63,6 +67,10 @@ class AddFilmForm(FlaskForm):
     #director_list = Director.query.all()
     #director = SelectField('Director', choises=[*director_list])
     submit = SubmitField('Add')
+
+
+class FilmPosterForm(FlaskForm):
+    poster_loader = FileField('Poster')
 
 
 class AddGenre(FlaskForm):
