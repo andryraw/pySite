@@ -1,10 +1,14 @@
+import os.path
+
 from app import app, db, mail, ts
 from itsdangerous import SignatureExpired
+from werkzeug.utils import secure_filename
+import uuid as uuid
 from flask import render_template, url_for, redirect, flash, request
 from flask_login import current_user, login_user, logout_user, login_required
 from flask_mail import Message
-from app.forms import RegistrationForm, LoginForm, EditForm,\
-    AddFilmForm, AddFilmGenre, AddFilmDirector,\
+from app.forms import RegistrationForm, LoginForm, EditForm, \
+    AddFilmForm, AddFilmGenre, AddFilmDirector, \
     AddGenre, AddDirector, FilmPosterForm
 from app.models import User, Film, Director, Genre
 
@@ -34,8 +38,8 @@ def register():
     form = RegistrationForm()
     if form.validate_on_submit():
         u = User(first_name=form.first_name.data, last_name=form.last_name.data,
-                username=form.username.data, email=form.email.data,
-                about_me=form.about_me.data)
+                 username=form.username.data, email=form.email.data,
+                 about_me=form.about_me.data)
         u.set_password(form.password_1.data)
         db.session.add(u)
         db.session.commit()
@@ -97,7 +101,7 @@ def login():
         return redirect(url_for('index'))
     form = LoginForm()
     if form.validate_on_submit():
-        l_user = User.query.filter_by(username=form.username.data).first() # get uname from db
+        l_user = User.query.filter_by(username=form.username.data).first()  # get uname from db
         if l_user is None or not l_user.check_password(form.password.data):
             flash('Invalid username or password!')
             return redirect(url_for('login'))
@@ -150,11 +154,19 @@ def add_film():
 
 
 # film info
-@app.route('/film/<id>')
+@app.route('/film/<id>', methods=['GET', 'POST'])
 @login_required
 def film_info(id):
     form = FilmPosterForm()
     film = Film.query.filter_by(id=id).first_or_404()
+    if request.method == "POST":
+        if form.validate_on_submit():
+            poster_file = request.files['poster_loader']  # get uploaded poster file
+            poster_filename = secure_filename(poster_file.filename)  # get poster filename
+            poster_uuid_filename = str(uuid.uuid4()) + '_' + poster_filename  # add uuid to poster filename
+            film.poster = poster_uuid_filename  # add poster filename to db
+            poster_file.save(os.path.join(app.config['UPLOAD_FOLDER'], poster_uuid_filename))  # save poster to folder
+            db.session.commit()
     return render_template('film_info.html', title=film, form=form, film=film)
 
 
