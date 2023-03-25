@@ -2,14 +2,14 @@
 
 {% block content %}
     <h1>{{ film.name }}</h1>
-    {% set show_poster = film.poster %}
-   <p><img src="{{ url_for('static', filename='img/posters/' ~ show_poster) }}" alt="image" width="200"></p>
+    <p><img src="{{ url_for('static', filename='img/posters/' ~ film.poster) }}" alt="image" width="200"></p>
     {% if current_user.username == 'admin' %}
-    <form action="" method="post" enctype="multipart/form-data">
-        {{ form.hidden_tag() }}
-        {{ form.poster_loader }}
-        {{ form.submit() }}
-    </form>
+        <form action="" method="post" enctype="multipart/form-data">
+            {{ form.hidden_tag() }}
+            {{ form.poster_loader }}
+            <button type="submit" name="action" value="add">Add</button>
+            <button type="submit" name="action" value="remove">Delete</button>
+        </form>
     {% endif %}
     <p>Type: {{ film.type }}</p>
     <p>Duration: {{ film.duration }} min</p>

@@ -71,7 +71,7 @@ class AddFilmForm(FlaskForm):
 
 class FilmPosterForm(FlaskForm):
     poster_loader = FileField('Poster')
-    submit = SubmitField('Add')
+    #submit = SubmitField('Add')
 
 
 class AddGenre(FlaskForm):

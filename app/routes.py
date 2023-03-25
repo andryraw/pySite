@@ -160,13 +160,20 @@ def film_info(id):
     form = FilmPosterForm()
     film = Film.query.filter_by(id=id).first_or_404()
     if request.method == "POST":
-        if form.validate_on_submit():
+        if request.form['action'] == 'add':  # add poster button
             poster_file = request.files['poster_loader']  # get uploaded poster file
             poster_filename = secure_filename(poster_file.filename)  # get poster filename
             poster_uuid_filename = str(uuid.uuid4()) + '_' + poster_filename  # add uuid to poster filename
             film.poster = poster_uuid_filename  # add poster filename to db
             poster_file.save(os.path.join(app.config['UPLOAD_FOLDER'], poster_uuid_filename))  # save poster to folder
             db.session.commit()
+            return redirect(url_for('film_info', id=id))
+        elif request.form['action'] == 'remove':  # delete poster button
+            db_poster_filename = film.poster
+            os.remove(os.path.join(app.config['UPLOAD_FOLDER'], db_poster_filename))
+            film.poster = None
+            db.session.commit()
+            return redirect(url_for('film_info', id=id))
     return render_template('film_info.html', title=film, form=form, film=film)
 
 
