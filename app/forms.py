@@ -69,9 +69,13 @@ class AddFilmForm(FlaskForm):
     submit = SubmitField('Add')
 
 
-class FilmPosterForm(FlaskForm):
-    poster_loader = FileField('Poster')
-    #submit = SubmitField('Add')
+class AddFilmPosterForm(FlaskForm):
+    poster_loader = FileField('Poster', validators=[InputRequired()])
+    add_submit = SubmitField('Add')
+
+
+class DeleteFilmPosterForm(FlaskForm):
+    delete_submit = SubmitField('Delete')
 
 
 class AddGenre(FlaskForm):
