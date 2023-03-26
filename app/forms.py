@@ -1,6 +1,7 @@
 from app import app
 from app.models import User, Genre, Director
 from flask_wtf import FlaskForm
+from flask_wtf.file import FileRequired, FileAllowed, FileSize
 from wtforms import StringField, PasswordField, TextAreaField, BooleanField,\
     SubmitField, EmailField, SelectField, FileField
 from wtforms.validators import InputRequired, Email, EqualTo, Length, ValidationError
@@ -70,7 +71,8 @@ class AddFilmForm(FlaskForm):
 
 
 class AddFilmPosterForm(FlaskForm):
-    poster_loader = FileField('Poster', validators=[InputRequired()])
+    poster_loader = FileField('Poster', validators=[FileRequired(),
+                                                    FileAllowed(['jpg', 'jpeg', 'png'])])
     add_submit = SubmitField('Add')
 
 
