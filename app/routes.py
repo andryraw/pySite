@@ -162,7 +162,7 @@ def film_info(id):
     form_del = DeleteFilmPosterForm()
     film = Film.query.filter_by(id=id).first_or_404()
     if request.method == "POST":
-        if form.validate_on_submit() and form.add_submit.data:  # add poster button
+        if form.add_submit.data:  # add poster button
             poster_file = request.files['poster_loader']  # get uploaded poster file
             poster_filename = secure_filename(poster_file.filename)  # get poster filename
             poster_uuid_filename = str(uuid.uuid4()) + '_' + poster_filename  # add uuid to poster filename
@@ -170,8 +170,11 @@ def film_info(id):
             poster_file.save(os.path.join(app.config['UPLOAD_FOLDER'], poster_uuid_filename))  # save poster to folder
             db.session.commit()
             return redirect(url_for('film_info', id=id))
-        if form_del.validate_on_submit():  # delete poster button
-            db_poster_filename = film.poster
+    if form_del.delete_submit.data:  # delete poster button
+        db_poster_filename = film.poster
+        if db_poster_filename is None:
+            flash("Poster doesn't exist!")
+        else:
             os.remove(os.path.join(app.config['UPLOAD_FOLDER'], db_poster_filename))
             film.poster = None
             db.session.commit()

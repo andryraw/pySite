@@ -7,6 +7,9 @@
         <form action="" method="post" enctype="multipart/form-data">
             {{ form.hidden_tag() }}
             {{ form.poster_loader }}
+            {% for error in form.poster_loader.errors %}
+                [{{ error }}]
+            {% endfor %}
             {{ form.add_submit }}
         </form><br>
         <form action="" method="post" enctype="multipart/form-data">
